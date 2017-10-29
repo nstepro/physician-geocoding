@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+
+    <!-- PAGE TITLE -->
+    <title>Insert Title</title>
+    <subtitle>Insert More Descriptive Subtitle</subtitle>
+
+    <!-- CSS  -->
+    <!-- Libraries -->
+    <link href="css/lib/jquery.dynatable.css" rel="stylesheet" />
+    <link href="css/lib/nouislider.min.css" rel="stylesheet" />
+    <link href="css/lib/materialize.min.css" rel="stylesheet" />
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:100,100i,300,300i,400,400i,600,600i,700,700i|Josefin+Slab:100,300,400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu:300,300i,400,400i,500,500i,700,700i" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="http://arcadia-assets.s3-website-us-west-2.amazonaws.com/styleInit.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <!-- Your CSS Here -->
+    <link href="/static/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+</head>
+
+<body>
+<div id="tooltip" class="tooltip"></div>
+
+<!-- MAIN PAGE -->
+<div id="main">
+
+    <div class="section title pad-bottom-0 center-align">
+        <a id="logo-link" href="http://www.arcadiasolutions.com"><img class="arcadia-logo" src="http://arcadia-assets.s3-website-us-west-2.amazonaws.com/arcadia-logo.png"/></a>
+    </div>
+
+    <div class="section content pad-top-0">
+        <div class="row margin-bottom-0">
+            <div class="col s12" id="dashboard-holder">
+            </div>
+        </div>  
+        
+    <div class="section footer center-align grey-text text-darken-2">
+        <p>&copy; 2017 <a href="http://www.arcadiasolutions.com">Arcadia Solutions</a></p>
+    </div>
+</div>
+    
+      <!-- Modal Structure -->
+<div id="county-summary-modal" class="modal closed">
+<div class="modal-content">
+  <h5 class="modal-header">Modal Header</h5>
+  <div class="row"style="margin: 40px;"><div class="col s12 summary-stats"></div></div>
+  <div class="row" id="stat-columns">
+  </div>
+</div>
+</div>
+
+<!-- SCRIPTS -->
+    <!-- Libraries -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-geo.v1.min.js"></script>
+    <script src="https://d3js.org/topojson.v2.min.js"></script>
+<!--    <script src="/static/js/lib/queue.min.js"></script>-->
+<!--    <script src="js/lib/jquery-1.10.2.min.js"></script>-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/static/js/lib/jquery.smooth-scroll.min.js"></script>
+    <script src="/static/js/lib/jquery.dynatable.js"></script>
+    <script src="/static/js/lib/nouislider.min.js"></script>
+    <script src="/static/js/lib/materialize.min.js"></script>
+<!--     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>-->
+
+    <!-- Your Scripts Here -->
+<!--    <script src="http://arcadia-assets.s3-website-us-west-2.amazonaws.com/helpers.js"></script>-->
+    <script src="/static/js/helpers.js"></script>
+    <script src="/static/js/draw.js"></script>
+
+    <!-- Initialize Page -->
+    <script src="http://arcadia-assets.s3-website-us-west-2.amazonaws.com/styleInit.js"></script>
+    <script>
+        draw(0);
+    </script>
+
+</body>
+</html>
