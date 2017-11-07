@@ -137,6 +137,9 @@ a.arc-btn:hover {
     border-top: 1px solid rgba(255,255,255,1);
     border-bottom: 1px solid rgba(255,255,255,1);
 }
+#specialty-filter .filter-content div:first-of-type {
+    margin-top: 1em;
+}
 
 path.census-blocks {
   fill: none;

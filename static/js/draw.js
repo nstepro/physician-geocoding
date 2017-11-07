@@ -80,6 +80,24 @@ function draw(sessionId) {
                     buildBubbles(prepData(rawData), projection);
                 }})
             });
+            
+            d3.select("#all-spec-btn").on("click", function(){
+                cfg.specialties.forEach(function(d){d.enabled=true});
+                d3.selectAll("#specialty-filter div").each(function(){
+                    spec = d3.select(this);
+                    spec.style("background-color", cfg.colorMap[spec.attr("data-val")]);
+                    buildBubbles(prepData(rawData), projection);
+                });
+            });
+            
+            d3.select("#no-spec-btn").on("click", function(){
+                cfg.specialties.forEach(function(d){d.enabled=false});
+                d3.selectAll("#specialty-filter div").each(function(){
+                    spec = d3.select(this);
+                    spec.style("background-color", null);
+                    buildBubbles(prepData(rawData), projection);
+                });
+            });
 
         });  
         
@@ -219,7 +237,11 @@ function prepData(rawData) {
     
     var filteredSpecialties = [];
     cfg.colorMap = {};
-    cfg.specialties.filter(function(d){return d.enabled==true}).forEach(function(d){filteredSpecialties.push(d.name)});
+    var f = cfg.specialties.filter(function(d){return d.enabled==true});
+    
+    if (f.length>0) {
+        f.forEach(function(d){filteredSpecialties.push(d.name)});
+    }
     cfg.specialties.forEach(function(d){cfg.colorMap[d.name] = d.color});
     
     var filteredData = rawData.filter(function(d){
@@ -228,12 +250,14 @@ function prepData(rawData) {
             ;
     });
     
-    console.log(filteredData);
-    
     if (cfg.pcpSpecialist!="All") {
         filteredData = filteredData.filter(function(d){
             return d.categoryName == cfg.pcpSpecialist;
         })
+    }
+
+    if (filteredData.length==0) {
+        return [];
     }
     
 //    One Row Per Location (when Combine flag set)
@@ -364,32 +388,36 @@ function prepData(rawData) {
 
 function buildBubbles(data, projection, zoom){
     
+    
     var rScale = d3.scalePow(cfg.combine?.8:.3).range([2, cfg.maxBubbleRadius]).domain([0, cfg.maxFreq]);
     
     var rptData = {};
 
     d3.selectAll(".provider-plots").remove();
     var g = d3.select("#geocode-holder").append("g").attr("class","provider-plots");
-    g.selectAll("circle")
-        .data(data).enter()
-        .append("circle").attr("class",function(d){return "provider prov-"+d.id})
-        .attr("cx", function(d){return projection([d.geo.longitude, d.geo.latitude])[0]})
-        .attr("cy", function(d){return projection([d.geo.longitude, d.geo.latitude])[1]})
-        .style("stroke-width", cfg.strokeWidth/cfg.z)
-        .attr("absR", function(d){
-            if (cfg.sizeBubbles) {
-                return rScale(d.freq>cfg.maxFreq?cfg.maxFreq:d.freq)
-            } else {return cfg.maxBubbleRadius}
-        })
-        .attr("r", function(){return d3.select(this).attr("absR")/cfg.z})
-        .style("fill", function(d){return d.color})
-        .on("click", function(d){
-            console.log(d);
-            locationSummary(d, ".prov-"+d.id)
-//            var xDiff = $("#dashboard-holder").width()/2-$(".prov-"+d.id).offset().left;
-//            zoom.translateBy(d3.select("#geocode-holder"), xDiff,0);
-        
-        });
+    if (data.length>0) {
+        g.selectAll("circle")
+            .data(data).enter()
+            .append("circle").attr("class",function(d){return "provider prov-"+d.id})
+            .attr("cx", function(d){return projection([d.geo.longitude, d.geo.latitude])[0]})
+            .attr("cy", function(d){return projection([d.geo.longitude, d.geo.latitude])[1]})
+            .style("stroke-width", cfg.strokeWidth/cfg.z)
+            .attr("absR", function(d){
+                if (cfg.sizeBubbles) {
+                    return rScale(d.freq>cfg.maxFreq?cfg.maxFreq:d.freq)
+                } else {return cfg.maxBubbleRadius}
+            })
+            .attr("r", function(){return d3.select(this).attr("absR")/cfg.z})
+            .style("fill", function(d){return d.color})
+            .on("click", function(d){
+                console.log(d);
+                locationSummary(d, ".prov-"+d.id)
+    //            var xDiff = $("#dashboard-holder").width()/2-$(".prov-"+d.id).offset().left;
+    //            zoom.translateBy(d3.select("#geocode-holder"), xDiff,0);
+
+            });
+    }
+
 }
 
 function buildSpecialtyFilter(data) {
@@ -403,6 +431,9 @@ function buildSpecialtyFilter(data) {
     specialtyNest.sort(function(a,b){return d3.descending(a.values.length, b.values.length)});
     
     var div = d3.select("#specialty-filter .filter-content").html("");
+    
+    div.append("a").attr("class","arc-btn").attr("id","all-spec-btn").attr("href","#!").text("All");
+    div.append("a").attr("class","arc-btn").attr("id","no-spec-btn").attr("href","#!").text("None");
     
     specialtyNest.forEach(function(d, i){
         var c = colorGroup[i%colorGroup.length];
