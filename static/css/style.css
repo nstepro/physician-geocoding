@@ -3,23 +3,176 @@ html {
     font-size:14px;
 }
 
-html, p, h1, h2, h3, h4, h5, .tooltip, svg text {
+html, p, .tooltip, svg text {
     font-weight: 400;
-    font-family: 'Ubuntu', sans-serif;
+    font-family: 'Encode Sans', sans-serif;
+}
+h1, h2, h3, h4, h5 {
+    font-weight: 600;
+    font-family: 'Saira Condensed', sans-serif;
+    text-transform: uppercase;
+}
+div#main {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+div#main > div {
+    transition: width .5s;
+    overflow-x: hidden;
+}
+div#dashboard-holder {
+    z-index: 0;
+    flex: 8;
+}
+div#dashboard-holder.small {
+    flex: 6;
+}
+div#filters-holder {
+    z-index: 99;
+    flex: 4;
+    box-shadow: -12px 0 36px rgba(0,0,0,.2);
+    background-color: #383838;
+    color: #fff;
+}
+div#footer-holder {
+    position: fixed;
+    z-index: 9;
+    left: 0;
+    top: 95vh;
+    height: 5vh;
+    width: 100vw;
+}
+div#info-pane.hidden {
+    flex: 0;
+    width: 0;
+    max-width: 0;
+    overflow: hidden;
+}
+div#info-pane {
+    z-index: 999;
+    flex: 4;
+    color: #fff;
+    display: flex;
+    box-shadow: -12px 0 36px rgba(0,0,0,.2);
+    background-color: #2d2d2d;
 }
 
+div#info-pane .content {
+    flex: 1;
+    height: 100vh;
+}
+.info-header {
+    white-space: pre-wrap;
+}
+.info-list-item p {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+.info-spec-tags span {
+    border-left-style: double;
+    border-left-width: 3px;
+    padding-left: 3px;
+    color: rgba(255,255,255,.5);
+}
+#info-pane a {
+    color: #fff;
+}
+#info-pane a:hover {
+    text-decoration: underline;
+}
+.info-list-item {
+    margin-bottom: .5em;
+}
+.filter-header {
+    font-family: "Saira Condensed";
+    text-transform: uppercase;
+    font-size: 1.5em;
+    text-align: center;
+    color: rgba(255,255,255,.7);
+    margin-top: .5em;
+    margin-bottom: .5em;
+    line-height: 1em;
+}
+#specialty-filter .filter-content div {
+    font-family: "Encode Sans Condensed", sans-serif;
+/*    border-radius: 2em;*/
+    border: solid 1px rgba(255,255,255,.5);
+    margin-top: 6px;
+    margin-bottom: 6px;
+    padding: .4em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+#specialty-filter .filter-content div:hover {
+    text-decoration: underline;
+    border: solid 1px rgba(255,255,255,1);
+}
+
+.filter-content {
+    text-align: center;
+    padding-bottom: .5em;
+}
+a.arc-btn {
+    color: #fff;
+    padding: .4em;
+    margin: 0;
+    border-top: 1px solid rgba(255,255,255,.5);
+    border-bottom: 1px solid rgba(255,255,255,.5);
+    border-left: 1px solid rgba(255,255,255,.5);
+}
+a.arc-btn:last-of-type {
+    border-right: 1px solid rgba(255,255,255,.5);
+}
+a.arc-btn.selected {
+    background-color: #fff;
+    color: #000;
+}
+
+a.arc-btn:hover {
+    text-decoration: underline;
+    border-top: 1px solid rgba(255,255,255,1);
+    border-bottom: 1px solid rgba(255,255,255,1);
+}
 
 path.census-blocks {
   fill: none;
-  stroke: #000;
+  stroke: #969696;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
-.provider-plots circle {
+circle.provider {
 /*    fill: black;*/
     stroke: black;
     stroke-opacity: .8;
-    fill-opacity: .2;
+    fill-opacity: .8;
+/*    mix-blend-mode: screen;*/
+    cursor: pointer;
+}
+circle.provider.hidden {
+    display:none;
+    visibility: hidden;
+    fill-opacity: 0;
+    stroke-opacity: 0;
+}
+circle.provider:hover {
+    stroke:#fff;
+    stroke-opacity: 1;
+}
+circle.provider.selected {
+    stroke: #fff;
+/*    stroke-width: 1px !important;*/
+    stroke-opacity: 1;
+    fill-opacity: 1;
+}
+.clickable {
+    cursor: pointer;
+}
+.row.info-header {
+    margin-bottom: 0;
 }
 
 .counties {
@@ -27,6 +180,9 @@ path.census-blocks {
 }
 .dropdown-content {
     max-height: 450px;
+}
+.section.title {
+    display:none;
 }
 line.pat-line, circle.pct-circle {
     stroke: none;
@@ -760,11 +916,37 @@ svg text.primary-bar-labels {
     width: 0px;
     background: transparent;
 }
+div#main {
+    background-color: #1b1b1b;
+}
+.arcadia-logo {
+    width: 160px;
+}
 
+subtitle {
+    display: none;
+    visibility: hidden;
+}
+.tooltip {
+    white-space: pre-wrap;
+    text-align: left;
+    position: absolute;
+    padding: .2em 1em;
+    visibility: hidden;
+    z-index: 999999 !important;
+    max-width: 400px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    background-color: #4b4b4b;
+    color: rgba(255,255,255,.7);
+    font-weight: 400;
+    border-radius: 2px;
+}
+
+/*
 
 @media screen and (min-width: 1100px) {
     #main {
         width: 80vw;
         margin: 0 10vw;
     }
-}
+}*/

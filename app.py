@@ -1,6 +1,7 @@
 #!flask/bin/python
 from flask import Flask, redirect, url_for
 from flask import Response
+from flask_basicauth import BasicAuth
 import json, decimal
 import psycopg2
 from flask_cors import CORS
@@ -26,13 +27,20 @@ CORS(app)
 ***REMOVED***
 cur = conn.cursor()
 
+app.config['BASIC_AUTH_USERNAME'] = 'bidco'
+app.config['BASIC_AUTH_PASSWORD'] = 'wehavedata'
+app.config['BASIC_AUTH_FORCE'] = True
+
+basic_auth = BasicAuth(app)
+
 @app.route('/')
+@basic_auth.required
 def home():
   return redirect(url_for('static', filename='index.html'))
 
-@app.route("/getProviders/<organization>/", methods=['GET'])
-def getProviders(organization):
-  cur.execute("select * from providergeocode where organization = '" + organization + "'")
+@app.route("/getProviders/<organization>/<minfreq>/", methods=['GET'])
+def getProviders(organization, minfreq):
+  cur.execute("select * from getProviderGeocode('"+organization+"',"+minfreq+")")
   data = cur.fetchall()  
   output=[]
   str(data)
@@ -41,21 +49,14 @@ def getProviders(organization):
     'reportName':item[0],
     'npi':item[1],
     'freq':item[2],
-    'lastName':item[3],
-    'firstName':item[4],
-    'middleName':item[5],
-    'categoryName':item[6],
-    'pcpFlag':item[7],
-    'streetAddress':item[8],
-    'city':item[9],
-    'state':item[10],
-    'zip':item[11],
-    'specialty':item[12],
-    'organization':item[13],
-    'latitude':item[14],
-    'longitude':item[15],
-    'accuracyScore':item[16],
-    'accuracyType':item[17]
+    'categoryName':item[3],
+    'streetAddress':item[4],
+    'city':item[5],
+    'state':item[6],
+    'specialty':item[7],
+    'organization':item[8],
+    'latitude':item[9],
+    'longitude':item[10]
     }
     output.append(i)
   data = json.dumps(output)
