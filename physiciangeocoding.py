@@ -24,11 +24,11 @@ def decimal_default(obj):
         
 app = Flask(__name__)
 CORS(app)
-***REMOVED***
+conn = psycopg2.connect("dbname=##dbname user=##username password=##password host=##hosturl port=##port")
 cur = conn.cursor()
 
-app.config['BASIC_AUTH_USERNAME'] = 'bidco'
-app.config['BASIC_AUTH_PASSWORD'] = 'wehavedata'
+app.config['BASIC_AUTH_USERNAME'] = 'user'
+app.config['BASIC_AUTH_PASSWORD'] = 'password'
 app.config['BASIC_AUTH_FORCE'] = True
 
 basic_auth = BasicAuth(app)
